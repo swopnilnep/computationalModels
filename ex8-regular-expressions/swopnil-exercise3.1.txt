@@ -1,0 +1,78 @@
+Author		Swopnil N. Shrestha
+Class		Computational Models
+Date		20.03.2019
+Exercise	3.1 Regular Languages and Regular Grammars		
+------------------------------------------------------------------------------------------
+
+Exercise 1
+----------
+
+Find all strings in L((a+b)*b(a+ab)*) of length length less than four.
+
+	Answer: The strings of length less than four in L are:
+		
+
+		ab	b	bba
+		aab	bab	ba
+		aba	bb	bab
+		abb	bbb	baa
+
+
+Exercise 5
+----------
+
+Find a regular expression for the set {a(^n)b(^b): (n+m) is even}, (^n) stands for superscript)
+
+	Answer: We know that a sum is even if it is a sum of two odd numbers or a sum of two
+		even numbers. Therefore, 
+
+			
+				(aa)*(bb)* + (aa)*a(bb(*b) 
+
+
+		gives a regular expression with an even number of characters.
+
+
+Exercise 6
+----------
+
+Give a regular expression for L2 = {a(^n)b(^m) : n < 4, m <= 3}
+
+
+	Answer: r2 is a regular expression such that,
+
+		r2 = (ø + a + aa + aaa ) . (ø + b + bb + bbb) 
+
+
+
+Exercise 9
+----------
+
+
+Give a simple regular expression for Lr where L is the language in Exercise 1.
+
+
+	Answer: Lr is a regular expression where, 
+
+		there exists a w that belongs to {a,b} and |w| = 1,
+		and, Lr = b + wb + bw + btw + wwb + wbw
+
+		or, Lr = b + (a+b)b + b(a) + b(aa + ab) + (aa+bb+ab)b + (a+b)b(a)
+
+
+Exercise 13
+----------
+
+
+Find a regular expression for L = {vwv: vow belongs to {a,b}*, |v| = 2}
+
+	Answer: Here, for each v in L, 
+		Vr is the regular expression (aa + bb + ab + ba)
+		So, since Lr is vwv, 
+		Lr is (aa + bb + ab + ba) . (a+b)* . (aa + bb + ab + ba).
+
+
+------------------------------------------------------------------------------------------
+END OF Exercises
+		
+		
