@@ -3,22 +3,23 @@
 # 06/03/2019
 
 import sys
-import state
-# import stack
-import nfastate
-import streamreader
-import orderedcollections
+import state                            # representation of DFA states
+import nfastate                         # states in an NFA
+import streamreader                     # reads the input string
+import orderedcollections               # sorts the set data
 
-epsilon = "epsilon"
+epsilon = "epsilon"                     # just so that you don't have to specify in quotes everytime
 
 class NFA:
-
+    # The NFA class only has states and classes that are put as parameters in the code
     def __init__(self, classes, states):
         self.states = states
         self.classes = classes
 
 class DFA:
-
+    # classes - dictionary of accepted strings
+    # states - dictionary of accepted states in the machine
+    # numStates - total number of states
     def __init__(self, classes=orderedcollections.OrderedMap(), states=orderedcollections.OrderedMap()):
         self.classes = orderedcollections.OrderedMap(classes)
         self.states = orderedcollections.OrderedMap(states)
