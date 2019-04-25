@@ -2,8 +2,10 @@ import streamreader
 import state
 from orderedcollections import *
 
+
 class Scanner:
-    def __init__(self, instream = None, startStateId = None, states={}, classes={}, keywords = {}, identifierTokenId = -1, eatComments = False, commentTokenId = -1):
+
+    def __init__(self, instream=None, startStateId=None, states={}, classes={}, keywords={}, identifierTokenId=-1, eatComments=False, commentTokenId=-1):
         # The use of dict below creates a copy of the default parameter because
         # only one copy of default parameters is created and if multiple scanner
         # objects were created this would be a problem... for Python...
@@ -26,9 +28,23 @@ class Scanner:
         # map of keywords if the lexeme is in the keyword map.
         # If a transition is not found, then an exception can be raised like this.
         # raise Exception("Bad Token '"+lex+"' found at line " + str(self.reader.getLineNumber()) + " and column " + str(self.reader.getColNumber()) + ".")
+        self.reader.skipWhiteSpace()
+        currentStateId = self.startStateId
+        lex = ""
 
-        # When you call the onGoTo method of the state class, you'll have to pass in the ord(c) where
-        # c is the character you read from the StreamReader object self.reader. This is necessary because
-        # the transitions in the calscanner.py are on the ASCII equivalents of the characters and
-        # not the actual characters themselves. This is because some characters are unprintable.
-        pass
+        while True:
+            currentState = self.states[currentStateId]
+
+            # get a character
+            ch = self.reader.readChar()
+
+            # look for a transition on that character from the current state
+            currentStateId = currentState.onGoTo(ord(ch))
+            if currentStateId == state.NoTransition:
+                if currentState.isAccepting():
+                    self.reader.unreadChar(ch)
+                    return (currentState.getAcceptsTokenId(), lex)
+                raise Exception("Bad Token '" + lex + "' found at line " + str(
+                    self.reader.getLineNumber()) + " and column " + str(self.reader.getColNumber()) + ".")
+            else:
+                lex += ch

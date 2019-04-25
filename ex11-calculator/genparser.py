@@ -1,7 +1,7 @@
 # Swopnil N. Shrestha
-# CS260-SP 2019
-# Luther College
+# CS260
 # April 25 2019
+
 
 from lr0state import *
 import stack
@@ -106,9 +106,6 @@ class Parser:
             # Peek at the top of the stack to get the stateId and return value.
             stateId, returnValue = prodStack.peek()
 
-            # Use the stateId to lookup the lr0state object. If this state is the accepting state,
-            # call buildReturnValue on the single item in this lr0state object and return it to 
-            # exit the infinite loop.
             currentState = self.states[stateId]
 
             if currentState.isAccepting():
@@ -125,19 +122,21 @@ class Parser:
             # conflicts.
 
             # If no shift operation is possible then look for a reduce possibility.
-            # we look in the items of the state for an item with the tokenId in its lookahead set (la).
+            # we look in the items of the state for an item that would
+            # work to reduce by. If more than one item is found then we have a
+            # reduce/reduce conflict.
 
             # If an item to reduce by is found then call buildReturnValue which will build the return
-            # value (e.g. usually an AST) for the reduction by the item.
+            # value (e.g. usually an AST) for the reduction.
             # NOTE: buildReturnValue pops off the correct number of values from the stack, but does not
-            # push on the new state found by following the transition on the lhsId of the production of the 
-            # chosen item.
+            # push on the new state found by following the transition on the
+            # LHS of the chosen item.
 
             if currentState.hasTransition(tokenId):
                 prodStack.push((currentState.onClassGoTo(tokenId), lex))
                 tokenNeeded = True
             else:
-                isReduced = False   # looop and a half, kent talked about it int the lecture
+                isReduced = False
                 for item in currentState.items:
                     production = item.production
                     if tokenId in item.la:
@@ -150,7 +149,7 @@ class Parser:
                             (self.states[stateId].onClassGoTo(production.lhsId), value))
                         isReduced = True
 
-            # if no item was found for a shift or reduce operation, then there is a problem so raise an exception
+            # if no item was found for a shift or reduce operation, then tere is a problem so raise an exception
             # by calling the error function.
             if not isReduced:
                 self.error(stateId, tokenId, prodStack, lex)

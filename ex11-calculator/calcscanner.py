@@ -1,3 +1,8 @@
+# Swopnil N. Shrestha
+# CS260
+# April 25 2019
+
+
 from genscanner import *
 from state import *
 
