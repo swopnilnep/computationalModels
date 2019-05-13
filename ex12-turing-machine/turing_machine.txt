@@ -1,0 +1,140 @@
+;	---------------------------------------------------------------------------------
+;	| Name: Swopnil N. Shrestha							|
+;	| Class: CS-280 Computational Models						|
+;	| Instructor: Dr. Kent D. Lee							|
+;	| Purpose: Construct a turing machine that accepts ww^r with w ϵ (a,b,c)	|
+;	| assuming that the end is delimited by _					|
+;	---------------------------------------------------------------------------------
+
+;	Approach
+;	---------------------------------------------------------------------------------
+;	| Read the first symbol. If it is a,b,c replace it with X,Y,Z respectively.	|
+;	| Then go to the end of the string and make sure the last symbol is the same	|
+;	| as the first. Now, go back to the start and repeat the same process for all	|
+;	| other characters in the same process described.				|
+;	---------------------------------------------------------------------------------
+
+
+;	PROGRAM
+;	=================================================================================
+
+; Check for a
+0 a x r A1
+0 b y r B1
+0 c z r C1
+
+; If a exists
+	A1 a a r A1
+	A1 b b r A1
+	A1 c c r A1
+
+; While there converted characters
+	A1 _ _ l A2
+	A1 x x l A2
+	A1 y y l A2
+	A1 z z l A2
+
+;	if converted a is found
+		A2 a x l A3
+;	else	
+		A2 b * r reject
+		A2 c * r reject
+		A2 x * r reject
+		A2 y * r reject
+		A2 z * r reject
+		A2 _ * r reject
+
+; While there are unconverted characters
+	A3 a a l A3
+	A3 b b l A3
+	A3 c c l A3
+
+	; if a if found again
+		A3 x x r 0
+
+; Check for b
+B1 a a r B1
+B1 b b r B1
+B1 c c r B1
+
+; While there are converted characters
+	B1 _ _ l B2
+	B1 x x l B2
+	B1 y y l B2
+	B1 z z l B2
+
+;	if converted b is found
+		B2 b y l B3
+
+; 	else
+		B2 a * r reject
+		B2 c * r reject
+		B2 x * r reject
+		B2 y * r reject
+		B2 z * r reject
+		B2 _ * r reject
+
+; While there are unconverted characters
+	B3 a a l B3
+	B3 b b l B3
+	B3 c c l B3
+
+	; If b is found again
+		B3 y y r 0
+
+; Check for c
+
+C1 a a r C1
+C1 b b r C1
+C1 c c r C1
+
+; While there are converted characters
+	C1 _ _ l C2
+	C1 x x l C2
+	C1 y y l C2
+	C1 z z l C2
+
+; 	if converted c is found
+		C2 c z l C3
+;	else
+		C2 a * r reject
+		C2 b * r reject
+		C2 x * r reject
+		C2 y * r reject
+		C2 z * r reject
+		C2 _ * r reject
+
+; While there are unconverted characters
+	C3 a a l C3
+	C3 b b l C3
+	C3 c c l C3
+
+	; If c is found again
+		C3 z z r 0
+
+; Accepting States
+
+0 _ _ r accept
+
+0 x x r check
+0 y y r check
+0 z z r check
+
+	check x x r check
+	check y y r check
+	check z z r check
+
+check _ _ r accept
+
+; Print smile
+	accept * : r accept2
+	accept2 * ) * halt-accept
+
+; Print frown
+	reject * _ r reject1
+	reject1 * : r reject2
+	reject2 * ( * halt-reject
+
+
+;	END OF PROGRAM
+;	=================================================================================
